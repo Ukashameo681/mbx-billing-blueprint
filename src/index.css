@@ -1,42 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* MBX Medical Billing Design System - Professional Healthcare Aesthetic */
 
 @layer base {
   :root {
+    /* MBX Brand Colors - Medical Billing Professional Palette */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 222 84% 5%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 222 84% 5%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --popover-foreground: 222 84% 5%;
+    
+    /* Primary: Sky Blue for CTAs and accents */
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 199 89% 42%;
+    
+    /* Secondary: Dark Blue for authority and headers */
+    --secondary: 214 73% 13%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 214 73% 18%;
+    
+    /* Muted colors for supporting text */
+    --muted: 215 28% 95%;
+    --muted-foreground: 215 20% 47%;
+    
+    /* Accent: Light blue for highlights */
+    --accent: 199 75% 95%;
+    --accent-foreground: 214 73% 13%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 215 20% 90%;
+    --input: 215 20% 90%;
+    --ring: 199 89% 48%;
+    
+    --radius: 0.75rem;
+    
+    /* Medical billing specific design tokens */
+    --hero-gradient: linear-gradient(135deg, hsl(214 73% 13%) 0%, hsl(214 73% 18%) 100%);
+    --accent-gradient: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(199 75% 55%) 100%);
+    --card-shadow: 0 4px 20px -4px hsl(215 20% 47% / 0.1);
+    --hero-shadow: 0 25px 50px -12px hsl(214 73% 13% / 0.25);
+    
+    /* Typography scale */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    
+    /* Spacing scale for medical billing layouts */
+    --section-padding: 5rem;
+    --container-padding: 1.5rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +128,95 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+@layer components {
+  /* MBX Component Styles */
+  .hero-gradient {
+    background: var(--hero-gradient);
+  }
+  
+  .accent-gradient {
+    background: var(--accent-gradient);
+  }
+  
+  .card-shadow {
+    box-shadow: var(--card-shadow);
+  }
+  
+  .hero-shadow {
+    box-shadow: var(--hero-shadow);
+  }
+  
+  .section-padding {
+    padding-top: var(--section-padding);
+    padding-bottom: var(--section-padding);
+  }
+  
+  .container-padding {
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+  
+  /* Medical billing specific animations */
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .bg-gradient-hero {
+    background: var(--hero-gradient);
+  }
+  
+  .bg-gradient-accent {
+    background: var(--accent-gradient);
+  }
+}
+
+/* Keyframes for medical billing site animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
