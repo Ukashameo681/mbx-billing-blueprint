@@ -441,18 +441,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          {/* Visual Process Flow */}
-          <div className="mt-20 flex justify-center">
-            <div className="relative max-w-4xl">
-              <img
-                className="rounded-xl shadow-hero"
-                src={billingProcess}
-                alt="Medical billing process workflow"
-              />
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-primary/20 to-transparent"></div>
-            </div>
-          </div>
         </div>
       </section>
 
