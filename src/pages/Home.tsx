@@ -246,59 +246,212 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              How It Works
+              How We Transform Your Revenue Cycle
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Get started with MBX in three simple steps.
+              Our proven three-phase approach ensures seamless implementation and maximum results for your practice.
             </p>
           </div>
           
-          <div className="mx-auto mt-16 max-w-6xl">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <div className="relative">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xl font-bold">
-                  1
+          <div className="mx-auto mt-20 max-w-6xl">
+            <div className="relative">
+              {/* Connection lines for desktop */}
+              <div className="absolute top-24 left-1/2 hidden w-full -translate-x-1/2 lg:block">
+                <div className="flex items-center justify-between px-16">
+                  <div className="h-0.5 w-80 bg-gradient-to-r from-primary to-primary/60"></div>
+                  <div className="h-0.5 w-80 bg-gradient-to-r from-primary/60 to-primary"></div>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">
-                  Free Billing Audit
-                </h3>
-                <p className="mt-4 text-muted-foreground">
-                  We review your current RCM and spot revenue leaks.
-                </p>
               </div>
               
-              <div className="relative">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xl font-bold">
-                  2
+              <div className="grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8">
+                {/* Step 1 */}
+                <div className="relative">
+                  <Card className="card-shadow hover:shadow-lg transition-all duration-300 border-0 bg-background">
+                    <CardHeader className="text-center pb-4">
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-accent shadow-hero">
+                        <BarChart3 className="h-10 w-10 text-primary-foreground" />
+                      </div>
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-lg">
+                        1
+                      </div>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <CardTitle className="text-xl mb-4">Comprehensive Billing Audit</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">
+                        Our certified billing experts conduct a thorough analysis of your current revenue cycle, 
+                        identifying bottlenecks, denial patterns, and revenue optimization opportunities.
+                      </CardDescription>
+                      <div className="mt-6 space-y-2">
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Revenue cycle assessment</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Denial pattern analysis</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>ROI projections</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">
-                  Tailored Onboarding
-                </h3>
-                <p className="mt-4 text-muted-foreground">
-                  Clean data handoff, payer setup, and workflows aligned to your EHR.
-                </p>
-              </div>
-              
-              <div className="relative">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xl font-bold">
-                  3
+                
+                {/* Step 2 */}
+                <div className="relative">
+                  <Card className="card-shadow hover:shadow-lg transition-all duration-300 border-0 bg-background">
+                    <CardHeader className="text-center pb-4">
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-accent shadow-hero">
+                        <Users className="h-10 w-10 text-primary-foreground" />
+                      </div>
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-lg">
+                        2
+                      </div>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <CardTitle className="text-xl mb-4">Seamless Implementation</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">
+                        Our dedicated onboarding team ensures a smooth transition with minimal disruption to your 
+                        operations. We integrate with your existing EHR and establish optimized workflows.
+                      </CardDescription>
+                      <div className="mt-6 space-y-2">
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>EHR integration setup</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Staff training & support</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Workflow optimization</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-foreground">
-                  Ongoing Optimization
-                </h3>
-                <p className="mt-4 text-muted-foreground">
-                  Transparent reporting and continuous denial reduction.
-                </p>
+                
+                {/* Step 3 */}
+                <div className="relative">
+                  <Card className="card-shadow hover:shadow-lg transition-all duration-300 border-0 bg-background">
+                    <CardHeader className="text-center pb-4">
+                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-accent shadow-hero">
+                        <TrendingUp className="h-10 w-10 text-primary-foreground" />
+                      </div>
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold shadow-lg">
+                        3
+                      </div>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <CardTitle className="text-xl mb-4">Continuous Performance Excellence</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">
+                        We monitor, analyze, and continuously optimize your revenue cycle performance with 
+                        transparent reporting and proactive management to maximize your practice's financial health.
+                      </CardDescription>
+                      <div className="mt-6 space-y-2">
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Real-time performance monitoring</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Monthly strategy reviews</span>
+                        </div>
+                        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <span>Continuous optimization</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
           
-          <div className="mt-16 flex justify-center">
-            <img
-              className="rounded-xl shadow-xl"
-              src={billingProcess}
-              alt="Medical billing process workflow"
-            />
+          {/* Process Timeline */}
+          <div className="mt-20">
+            <div className="mx-auto max-w-4xl">
+              <div className="text-center mb-12">
+                <h3 className="text-2xl font-bold text-foreground mb-4">Implementation Timeline</h3>
+                <p className="text-muted-foreground">From initial consultation to full optimization</p>
+              </div>
+              
+              <div className="relative">
+                <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-primary via-primary/60 to-primary transform -translate-x-1/2 hidden md:block"></div>
+                
+                <div className="space-y-8">
+                  <div className="flex items-center gap-8 md:gap-16">
+                    <div className="flex-1 text-right hidden md:block">
+                      <div className="bg-accent/50 rounded-lg p-4 inline-block">
+                        <p className="font-semibold text-foreground">Week 1-2</p>
+                        <p className="text-sm text-muted-foreground">Audit & Assessment</p>
+                      </div>
+                    </div>
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-lg flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <div className="bg-accent/50 rounded-lg p-4 md:hidden mb-2">
+                        <p className="font-semibold text-foreground">Week 1-2</p>
+                        <p className="text-sm text-muted-foreground">Audit & Assessment</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Complete analysis of current billing processes and performance metrics</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-8 md:gap-16">
+                    <div className="flex-1 text-right hidden md:block">
+                      <p className="text-sm text-muted-foreground">EHR integration, staff training, and workflow setup</p>
+                    </div>
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-lg flex-shrink-0"></div>
+                    <div className="flex-1 hidden md:block">
+                      <div className="bg-accent/50 rounded-lg p-4 inline-block">
+                        <p className="font-semibold text-foreground">Week 3-6</p>
+                        <p className="text-sm text-muted-foreground">Implementation</p>
+                      </div>
+                    </div>
+                    <div className="flex-1 md:hidden">
+                      <div className="bg-accent/50 rounded-lg p-4 mb-2">
+                        <p className="font-semibold text-foreground">Week 3-6</p>
+                        <p className="text-sm text-muted-foreground">Implementation</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">EHR integration, staff training, and workflow setup</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-8 md:gap-16">
+                    <div className="flex-1 text-right hidden md:block">
+                      <div className="bg-accent/50 rounded-lg p-4 inline-block">
+                        <p className="font-semibold text-foreground">Ongoing</p>
+                        <p className="text-sm text-muted-foreground">Optimization</p>
+                      </div>
+                    </div>
+                    <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-lg flex-shrink-0"></div>
+                    <div className="flex-1">
+                      <div className="bg-accent/50 rounded-lg p-4 md:hidden mb-2">
+                        <p className="font-semibold text-foreground">Ongoing</p>
+                        <p className="text-sm text-muted-foreground">Optimization</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">Continuous monitoring, reporting, and performance improvements</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Visual Process Flow */}
+          <div className="mt-20 flex justify-center">
+            <div className="relative max-w-4xl">
+              <img
+                className="rounded-xl shadow-hero"
+                src={billingProcess}
+                alt="Medical billing process workflow"
+              />
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-primary/20 to-transparent"></div>
+            </div>
           </div>
         </div>
       </section>
