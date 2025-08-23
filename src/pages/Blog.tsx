@@ -1,96 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Search, ArrowRight, Calendar, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getPublishedPosts, getAllTags, BlogPost, Tag } from '@/lib/blog-api';
 
-const blogPosts = [
-  {
-    id: 1,
-    title: '5 Common Claim Denial Reasons—and How to Fix Them',
-    excerpt: 'Learn about the top reasons claims get denied and proven strategies to prevent them from happening to your practice. This comprehensive guide covers the most frequent denial codes and actionable solutions.',
-    author: 'Sarah Johnson',
-    date: '2024-03-15',
-    readTime: '8 min read',
-    tags: ['Claims', 'Denials', 'Best Practices'],
-    href: '/blog/5-common-claim-denial-reasons',
-    featured: true
-  },
-  {
-    id: 2,
-    title: 'What a Clean Claims Rate Really Means for Your Practice',
-    excerpt: 'Understanding clean claims rates and why they\'re the most important KPI for your revenue cycle management. Discover how to calculate, track, and improve this critical metric.',
-    author: 'Mark Rodriguez',
-    date: '2024-03-10',
-    readTime: '6 min read',
-    tags: ['KPIs', 'Clean Claims', 'Revenue Cycle'],
-    href: '/blog/clean-claims-rate-guide',
-    featured: true
-  },
-  {
-    id: 3,
-    title: 'Credentialing Checklist for New Providers',
-    excerpt: 'A comprehensive guide to credentialing new providers and avoiding common pitfalls that delay payment. Everything you need to know about the credentialing process.',
-    author: 'Lisa Chen',
-    date: '2024-03-05',
-    readTime: '10 min read',
-    tags: ['Credentialing', 'Providers', 'Checklist'],
-    href: '/blog/credentialing-checklist',
-    featured: false
-  },
-  {
-    id: 4,
-    title: 'Understanding Prior Authorization: A Complete Guide',
-    excerpt: 'Navigate the complex world of prior authorizations with confidence. Learn strategies to streamline the process and reduce delays in patient care.',
-    author: 'David Thompson',
-    date: '2024-02-28',
-    readTime: '7 min read',
-    tags: ['Prior Authorization', 'Patient Care', 'Workflow'],
-    href: '/blog/prior-authorization-guide',
-    featured: false
-  },
-  {
-    id: 5,
-    title: 'HIPAA Compliance in Medical Billing: What You Need to Know',
-    excerpt: 'Stay compliant with HIPAA regulations while managing your revenue cycle. Essential requirements and best practices for protecting patient information.',
-    author: 'Lisa Chen',
-    date: '2024-02-20',
-    readTime: '9 min read',
-    tags: ['HIPAA', 'Compliance', 'Security'],
-    href: '/blog/hipaa-compliance-billing',
-    featured: false
-  },
-  {
-    id: 6,
-    title: 'Maximizing Collections: Strategies That Work',
-    excerpt: 'Proven techniques to improve your collection rates and reduce aging receivables. Learn how top-performing practices optimize their collections process.',
-    author: 'Mark Rodriguez',
-    date: '2024-02-15',
-    readTime: '8 min read',
-    tags: ['Collections', 'A/R', 'Revenue Optimization'],
-    href: '/blog/maximizing-collections',
-    featured: false
-  }
-];
-
-const allTags = ['Claims', 'Denials', 'Best Practices', 'KPIs', 'Clean Claims', 'Revenue Cycle', 'Credentialing', 'Providers', 'Checklist', 'Prior Authorization', 'Patient Care', 'Workflow', 'HIPAA', 'Compliance', 'Security', 'Collections', 'A/R', 'Revenue Optimization'];
 
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTags = selectedTags.length === 0 || 
-                       selectedTags.some(tag => post.tags.includes(tag));
-    return matchesSearch && matchesTags;
-  });
+  useEffect(() => {
+    loadPosts();
+    loadTags();
+  }, [currentPage, searchTerm, selectedTags]);
 
-  const featuredPosts = filteredPosts.filter(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured);
+  const loadPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await getPublishedPosts(
+        currentPage, 
+        9, 
+        searchTerm, 
+        selectedTags
+      );
+      setPosts(response.posts);
+      setTotalPages(response.totalPages);
+    } catch (error) {
+      console.error('Failed to load posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadTags = async () => {
+    try {
+      const tags = await getAllTags();
+      setAllTags(tags);
+    } catch (error) {
+      console.error('Failed to load tags:', error);
+    }
+  };
+
+  const featuredPosts = posts.filter((_, index) => index < 2); // First 2 posts as featured
+  const regularPosts = posts.filter((_, index) => index >= 2);
 
   const toggleTag = (tag: string) => {
     setSelectedTags(prev => 
@@ -98,6 +58,7 @@ export default function Blog() {
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
+    setCurrentPage(1); // Reset to first page when filtering
   };
 
   return (
@@ -139,13 +100,13 @@ export default function Blog() {
               <div className="flex flex-wrap gap-2">
                 {allTags.map((tag) => (
                   <Button
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? "default" : "outline"}
+                    key={tag.id}
+                    variant={selectedTags.includes(tag.name) ? "default" : "outline"}
                     size="sm"
-                    onClick={() => toggleTag(tag)}
+                    onClick={() => toggleTag(tag.name)}
                     className="text-xs"
                   >
-                    {tag}
+                    {tag.name}
                   </Button>
                 ))}
               </div>
@@ -174,51 +135,68 @@ export default function Blog() {
               </h2>
             </div>
             
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
-              {featuredPosts.map((post) => (
-                <Card key={post.id} className="card-shadow hover:shadow-lg transition-all duration-300 group">
-                  <CardHeader>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                      <Link to={post.href}>
-                        {post.title}
-                      </Link>
-                    </CardTitle>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        {post.author}
+            {loading ? (
+              <div className="grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
+                {[1, 2].map((i) => (
+                  <Card key={i} className="animate-pulse">
+                    <CardHeader>
+                      <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                      <div className="h-6 bg-muted rounded w-full mb-2"></div>
+                      <div className="h-4 bg-muted rounded w-1/2"></div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-4 bg-muted rounded w-full mb-2"></div>
+                      <div className="h-4 bg-muted rounded w-2/3"></div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 lg:grid-cols-2">
+                {featuredPosts.map((post) => (
+                  <Card key={post.id} className="card-shadow hover:shadow-lg transition-all duration-300 group">
+                    <CardHeader>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {post.tags.map((tag) => (
+                          <Badge key={tag.name} variant="secondary">
+                            {tag.name}
+                          </Badge>
+                        ))}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {new Date(post.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                        <Link to={`/blog/${post.slug}`}>
+                          {post.title}
+                        </Link>
+                      </CardTitle>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <User className="h-4 w-4" />
+                          {post.author.name}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </div>
                       </div>
-                      <span>{post.readTime}</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </CardDescription>
-                    <Button variant="link" asChild className="group-hover:translate-x-1 transition-transform p-0">
-                      <Link to={post.href}>
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base mb-4 line-clamp-3">
+                        {post.excerpt}
+                      </CardDescription>
+                      <Button variant="link" asChild className="group-hover:translate-x-1 transition-transform p-0">
+                        <Link to={`/blog/${post.slug}`}>
+                          Read More <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -232,33 +210,47 @@ export default function Blog() {
             </h2>
           </div>
           
-          {regularPosts.length > 0 ? (
+          {loading ? (
+            <div className="grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map((i) => (
+                <Card key={i} className="animate-pulse">
+                  <CardHeader>
+                    <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                    <div className="h-5 bg-muted rounded w-full mb-2"></div>
+                    <div className="h-3 bg-muted rounded w-1/2"></div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-3 bg-muted rounded w-full mb-2"></div>
+                    <div className="h-3 bg-muted rounded w-2/3"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : regularPosts.length > 0 ? (
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {regularPosts.map((post) => (
                 <Card key={post.id} className="card-shadow hover:shadow-lg transition-all duration-300 group">
                   <CardHeader>
                     <div className="flex flex-wrap gap-2 mb-3">
                       {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
+                        <Badge key={tag.name} variant="secondary" className="text-xs">
+                          {tag.name}
                         </Badge>
                       ))}
                     </div>
                     <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                      <Link to={post.href}>
+                      <Link to={`/blog/${post.slug}`}>
                         {post.title}
                       </Link>
                     </CardTitle>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>{post.author}</span>
+                      <span>{post.author.name}</span>
                       <span>•</span>
-                      <span>{new Date(post.date).toLocaleDateString('en-US', {
+                      <span>{new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric'
                       })}</span>
-                      <span>•</span>
-                      <span>{post.readTime}</span>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -266,7 +258,7 @@ export default function Blog() {
                       {post.excerpt}
                     </CardDescription>
                     <Button variant="link" asChild className="group-hover:translate-x-1 transition-transform p-0 text-sm">
-                      <Link to={post.href}>
+                      <Link to={`/blog/${post.slug}`}>
                         Read More <ArrowRight className="ml-1 h-3 w-3" />
                       </Link>
                     </Button>
@@ -277,6 +269,29 @@ export default function Blog() {
           ) : (
             <div className="text-center">
               <p className="text-muted-foreground">No articles found matching your criteria.</p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-8">
+              <Button 
+                variant="outline" 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+              >
+                Previous
+              </Button>
+              <span className="text-sm text-muted-foreground">
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button 
+                variant="outline" 
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Next
+              </Button>
             </div>
           )}
         </div>

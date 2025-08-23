@@ -14,6 +14,10 @@ const navigation = [
   { name: 'Contact', href: '/contact' },
 ];
 
+const adminNavigation = [
+  { name: 'Admin', href: '/admin' },
+];
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -64,6 +68,20 @@ export function Header() {
               {item.name}
             </Link>
           ))}
+          {adminNavigation.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={cn(
+                "text-sm font-medium leading-6 transition-colors hover:text-secondary border border-secondary/20 px-3 py-1 rounded-md",
+                location.pathname === item.href 
+                  ? "text-secondary bg-secondary/10" 
+                  : "text-secondary/80"
+              )}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -105,6 +123,21 @@ export function Header() {
                         location.pathname === item.href 
                           ? "text-primary" 
                           : "text-foreground"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  {adminNavigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-muted border border-secondary/20",
+                        location.pathname === item.href 
+                          ? "text-secondary bg-secondary/10" 
+                          : "text-secondary/80"
                       )}
                     >
                       {item.name}
